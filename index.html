@@ -256,282 +256,225 @@
 
 
 
-
-
-
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Chat — Ultra 3D Responsive</title>
-  <style>
-    :root {
-      --bg1: #090c1f;
-      --bg2: #131a3a;
-      --accent: #8257ff;
-      --accent2: #47e3c2;
-      --text: #e8efff;
-      --radius: 18px;
-      --shadow: 0 10px 35px rgba(2, 8, 30, 0.6);
-      font-family: "Poppins", sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Neon Chat</title>
+<style>
+  :root {
+    --bg: radial-gradient(circle at top left, #13002b, #000);
+    --accent1: #ff00ff;
+    --accent2: #00ffff;
+    --text: #eaf9ff;
+    --radius: 14px;
+  }
 
-    body {
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      background: linear-gradient(180deg, var(--bg1), var(--bg2));
-      color: var(--text);
-      perspective: 1000px;
-    }
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: var(--text);
+    overflow: hidden;
+  }
 
-    /* Dynamic floating particles */
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, var(--accent), transparent 70%);
-      opacity: 0.25;
-      animation: float 10s ease-in-out infinite alternate;
-      mix-blend-mode: screen;
-    }
-    .particle:nth-child(1) { width: 250px; height: 250px; top: -80px; left: -60px; animation-delay: 0s; }
-    .particle:nth-child(2) { width: 300px; height: 300px; bottom: -100px; right: -80px; animation-delay: 1s; background: radial-gradient(circle, var(--accent2), transparent 70%); }
-    .particle:nth-child(3) { width: 200px; height: 200px; top: 40%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15; }
+  .chat-box {
+    width: 100%;
+    max-width: 420px;
+    height: 90vh;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(14px);
+    border-radius: var(--radius);
+    box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 1s ease;
+  }
 
-    @keyframes float {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
-      50% { transform: translate3d(40px, -60px, 80px) scale(1.2); }
-      100% { transform: translate3d(0, 0, 0) scale(1); }
-    }
+  header {
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-    /* Container */
-    .container {
-      width: 420px;
-      max-width: 90vw;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius);
-      backdrop-filter: blur(10px) saturate(150%);
-      box-shadow: var(--shadow);
-      transform-style: preserve-3d;
-      transition: transform 0.3s ease;
-      overflow: hidden;
-      position: relative;
-      z-index: 2;
-    }
+  #chat {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-behavior: smooth;
+  }
 
+  .msg {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    line-height: 1.4;
+    font-size: 15px;
+    animation: slideUp 0.4s ease;
+  }
+
+  .user {
+    align-self: flex-end;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #000;
+  }
+
+  .bot {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+  }
+
+  .composer {
+    display: flex;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  input {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--text);
+    font-size: 15px;
+    transition: box-shadow 0.3s, background 0.3s;
+  }
+
+  input:focus {
+    box-shadow: 0 0 12px var(--accent1);
+    background: rgba(255,255,255,0.15);
+  }
+
+  button {
+    margin-left: 8px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    font-weight: 600;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--accent1);
+  }
+
+  /* Typing dots */
+  .typing {
+    display: inline-flex;
+    gap: 5px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent2);
+    border-radius: 50%;
+    animation: blink 1s infinite;
+  }
+  .dot:nth-child(2) { animation-delay: .2s; }
+  .dot:nth-child(3) { animation-delay: .4s; }
+
+  @keyframes blink {
+    0%, 100% { opacity: .3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .chat-box {
+      height: 95vh;
+      border-radius: 0;
+    }
     header {
-      text-align: center;
-      padding: 18px;
-      font-weight: 600;
-      font-size: 20px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 15px rgba(124, 92, 255, 0.2);
+      font-size: 1rem;
     }
-
-    #chat {
-      height: 58vh;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .msg {
-      max-width: 78%;
-      padding: 12px 14px;
-      border-radius: 14px;
+    input {
       font-size: 14px;
-      line-height: 1.3;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      opacity: 0;
-      transform: translateY(15px) scale(0.9);
-      animation: appear 0.45s ease forwards;
     }
-
-    @keyframes appear {
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .user {
-      margin-left: auto;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      border-bottom-right-radius: 6px;
-    }
-
-    .bot {
-      margin-right: auto;
-      background: rgba(255, 255, 255, 0.08);
-      color: #e0eaf6;
-      border-bottom-left-radius: 6px;
-    }
-
-    .composer {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .composer input {
-      flex: 1;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.07);
-      border: none;
-      outline: none;
-      border-radius: 10px;
-      color: var(--text);
-      font-size: 15px;
-    }
-
-    .composer input:focus {
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 0 12px rgba(124, 92, 255, 0.3);
-    }
-
-    .btn {
-      border: none;
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color: #081628;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(124, 92, 255, 0.4);
-    }
-
-    /* Typing dots */
-    .typing {
-      display: inline-flex;
-      gap: 6px;
-      padding: 8px 10px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      animation: bounce 1s infinite;
-    }
-
-    .dot:nth-child(2) { animation-delay: .15s; }
-    .dot:nth-child(3) { animation-delay: .3s; }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    /* Responsive (Phones 280px → 480px) */
-    @media (max-width: 480px) {
-      .container {
-        width: 95vw;
-        border-radius: 14px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-      }
-      header { font-size: 16px; padding: 12px; }
-      #chat { height: 65vh; padding: 12px; }
-      .msg { font-size: 13px; padding: 10px 12px; }
-      .composer { flex-direction: row; padding: 8px; gap: 6px; }
-      .composer input { padding: 10px; font-size: 14px; }
-      .btn { padding: 8px 10px; font-size: 14px; }
-    }
-
-    @media (max-width: 320px) {
-      header { font-size: 14px; }
-      .msg { font-size: 12px; }
-      .composer input { font-size: 13px; }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
-
-  <div class="container" id="container">
-    <header>⚡ AI Chat — Ultra 3D</header>
+  <div class="chat-box">
+    <header>⚡ AI Neon Chat</header>
     <div id="chat"></div>
     <div class="composer">
-      <input id="input" placeholder="Xabar yozing... (Enter bilan yubor)" />
-      <button id="send" class="btn">Yubor</button>
+      <input id="input" placeholder="Xabar yozing..." />
+      <button id="send">Yubor</button>
     </div>
   </div>
 
   <script>
-    const container = document.getElementById("container");
-    const chat = document.getElementById("chat");
-    const input = document.getElementById("input");
-    const send = document.getElementById("send");
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const send = document.getElementById('send');
 
-    // Smooth 3D Parallax effect
-    document.body.addEventListener("mousemove", (e) => {
-      const x = (window.innerWidth / 2 - e.pageX) / 40;
-      const y = (window.innerHeight / 2 - e.pageY) / 40;
-      container.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-    });
-
-    // Append message
-    function appendMessage(text, who = "bot", typing = false) {
-      const msg = document.createElement("div");
-      msg.className = "msg " + who;
+    function appendMessage(text, who = 'bot', typing = false) {
+      const msg = document.createElement('div');
+      msg.className = 'msg ' + who;
       msg.innerHTML = typing
-        ? `<div class='typing'><div class='dot'></div><div class='dot'></div><div class='dot'></div></div>`
+        ? `<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`
         : text;
       chat.appendChild(msg);
       chat.scrollTop = chat.scrollHeight;
       return msg;
     }
 
-    appendMessage("Salom 👋! Men yangi 3D moslashuvchan chatman. Savolingizni yozing!");
+    appendMessage("Salom! Men Neon AI chatbotman 💬");
 
     async function handleSend() {
-      const val = input.value.trim();
-      if (!val) return;
-      input.value = "";
-      appendMessage(val, "user");
-      const typing = appendMessage("", "bot", true);
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      appendMessage(text, 'user');
+      const typing = appendMessage('', 'bot', true);
 
       try {
-        const res = await fetch("https://text.pollinations.ai/" + encodeURIComponent(val));
+        const res = await fetch('https://text.pollinations.ai/' + encodeURIComponent(text));
         const reply = await res.text();
         typing.remove();
-        appendMessage(reply, "bot");
+        appendMessage(reply, 'bot');
       } catch {
         typing.remove();
-        appendMessage("⚠️ Xato: server bilan aloqa uzildi.", "bot");
+        appendMessage('Xatolik yuz berdi! 🔌', 'bot');
       }
     }
 
     send.onclick = handleSend;
-    input.onkeydown = (e) => e.key === "Enter" && handleSend();
-
-    // Glow pulse effect
-    setInterval(() => {
-      container.style.boxShadow =
-        Math.random() > 0.5
-          ? "0 0 30px rgba(124,92,255,0.4)"
-          : "0 0 25px rgba(71,227,194,0.4)";
-    }, 2200);
+    input.onkeydown = (e) => e.key === 'Enter' && handleSend();
   </script>
 </body>
 </html>
