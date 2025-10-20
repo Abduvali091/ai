@@ -4,7 +4,6 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -29,7 +28,6 @@
     align-items: center;
     height: 100vh;
     color: var(--text);
-    overflow: hidden;
   }
 
   .chat-box {
@@ -63,7 +61,6 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    scroll-behavior: smooth;
   }
 
   .msg {
@@ -73,6 +70,7 @@
     line-height: 1.4;
     font-size: 15px;
     animation: slideUp 0.4s ease;
+    word-wrap: break-word;
   }
 
   .user {
@@ -103,7 +101,6 @@
     padding: 12px;
     color: var(--text);
     font-size: 15px;
-    transition: box-shadow 0.3s, background 0.3s;
   }
 
   input:focus {
@@ -151,7 +148,6 @@
     50% { opacity: 1; transform: scale(1.3); }
   }
 
-  /* Animations */
   @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
@@ -181,7 +177,7 @@
     <header>⚡ AI Neon Chat</header>
     <div id="chat"></div>
     <div class="composer">
-      <input id="input" placeholder="Xabar yozing..." />
+      <input id="input" placeholder="Xabar yozing..." autocomplete="off" />
       <button id="send">Yubor</button>
     </div>
   </div>
@@ -190,6 +186,15 @@
     const chat = document.getElementById('chat');
     const input = document.getElementById('input');
     const send = document.getElementById('send');
+
+    const fakeReplies = [
+      "Hmm... qiziq savol 🤔",
+      "Buni o‘ylab ko‘ray... 💭",
+      "Albatta! Juda foydali fikr 👍",
+      "Bu haqda ko‘p narsa aytish mumkin 😄",
+      "Zo‘r! Yana davom eting 🔥",
+      "Tushundim, bu siz uchun muhim masala ekan."
+    ];
 
     function appendMessage(text, who = 'bot', typing = false) {
       const msg = document.createElement('div');
@@ -204,28 +209,25 @@
 
     appendMessage("Salom! Men Neon AI chatbotman 💬");
 
-    async function handleSend() {
+    function handleSend() {
       const text = input.value.trim();
       if (!text) return;
       input.value = '';
       appendMessage(text, 'user');
+
       const typing = appendMessage('', 'bot', true);
 
-      try {
-        const res = await fetch('https://text.pollinations.ai/' + encodeURIComponent(text));
-        const reply = await res.text();
+      setTimeout(() => {
         typing.remove();
+        const reply = fakeReplies[Math.floor(Math.random() * fakeReplies.length)];
         appendMessage(reply, 'bot');
-      } catch {
-        typing.remove();
-        appendMessage('Xatolik yuz berdi! 🔌', 'bot');
-      }
+      }, 1200);
     }
 
     send.onclick = handleSend;
-    input.onkeydown = (e) => e.key === 'Enter' && handleSend();
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSend();
+    });
   </script>
 </body>
 </html>
-
-
